@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <title>Título da página</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script type="text/javascript">
+        function testandoOvalidador() {
+            var cpf = document.getElementById('txtCPF').value;
+            if (cpf !== "000.000.000-00" && cpf !== "111.111.111-11" && cpf !== "222.222.222-22" && cpf !== "333.333.333-33" &&
+                cpf !== "444.444.444-44" && cpf !== "555.555.555-55" && cpf !== "666.666.666-66" && cpf !== "777.777.777-77" &&
+                cpf !== "888.888.888-88" && cpf !== "999.999.999-99") {
+                var teste = validaPrimeiroDigitoCPF(cpf);
+                var teste2 = validaSegundoDigitoCPF(cpf);
+                var output = "";
+                var digito = teste + "" + teste2;
+                if (digito === cpf.substring(14, 12)) {
+                    document.getElementById("testeJs").innerHTML = "O CPF é Verdadeiro";
+                } else {
+                    document.getElementById("testeJs").innerHTML = "O CPF é Falso";
+                }
+            } else {
+                document.getElementById("testeJs").innerHTML = "O CPF é Invalido";
+            }
+        }
+        function validaPrimeiroDigitoCPF(cpf) {
+            var l = [];
+            var cont = 10;
+            var num = "";
+            var priDig = 0;
+            for (var i = 0; i < 11; i++) {
+                if (cpf.substring(i, (i + 1)) != ".") {
+                    num = cpf.substring(i, (i + 1)) * cont;
+                    l.push(num);
+                    cont = cont - 1
+                }
+            }
+            for (var i = 0; i < 9; i++) {
+                priDig = priDig + parseInt(l[i]);
+            }
+            var priDivi = 0;
+            var numDiv = priDig % 11;
+            if (numDiv < 2) {
+                priDivi = 0;
+            } else {
+                priDivi = 11 - numDiv;
+            }
+            return priDivi;
+        }
+        function validaSegundoDigitoCPF(cpf) {
+            var l = [];
+            var cont = 11;
+            var num = "";
+            var priDig = 0;
+            var priDivi = 0;
+            for (var i = 0; i < 13; i++) {
+                if (cpf.substring(i, (i + 1)) != ".") {
+                    if (cpf.substring(i, (i + 1)) != "-") {
+                        num = cpf.substring(i, (i + 1)) * cont;
+                        l.push(num);
+                        cont = cont - 1;
+                    }
+                }
+            }
+            for (var i = 0; i < 10; i++) {
+                priDig = priDig + parseInt(l[i]);
+            }
+            var priDivi = 0;
+            var numDiv = priDig % 11;
+            if (numDiv < 2) {
+                priDivi = 0;
+            } else {
+                priDivi = 11 - numDiv;
+            }
+            return priDivi;
+        }
+        $(document).ready(function () {
+            $("#txtCPF").mask("999.999.999-99");
+        })
+    </script>
+    <style>
+        body {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <input type="text" class="form-control col-md-2" id="txtCPF" placeholder="Informe seu CPF" /><br />
+        <input type="button" class="btn btn-primary col-md-2" value="Validar CPF" onclick="testandoOvalidador()" />
+        <br /><br />
+        <p id="testeJs" class="text-primary"></p>
+    </div>
+</body>
+
+</html>
